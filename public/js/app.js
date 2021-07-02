@@ -1,5 +1,3 @@
-console.log('JS loaded')
-
 const weatherForm = document.querySelector('form')
 const search = document.querySelector('input')
 const messageOne = document.querySelector('#message-1')
@@ -20,7 +18,7 @@ weatherForm.addEventListener('submit', (e) => {
         } else {
             messageOne.textContent = data.location
             messageTwo.textContent = data.forecast
-            message3.textContent =  data.daily //'Tomorrow: ' + Math.round(data.daily[1].temp.day) + ' degrees \nThe day after tomorrow: ' + Math.round(data.daily[2].temp.day)
+            message3.textContent =  data.daily
         }
     })
 })
