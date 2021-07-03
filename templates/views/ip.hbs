@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <title>Title</title>
+    <link rel="icon" href="/img/weather.png">
+    <link rel="stylesheet" href="/css/styles.css">    
+</head>
+
+<body>
+    <div class="main-content">
+        {{>header}}
+        <p>IP: {{ip}}</p>
+        <p>Country: {{geo.country}}</p>
+        <p>City: {{geo.city}}</p>
+        <p>Coordinates: </p>
+            <p>Latitued: {{lat}}</p>
+            <p>Longtitued: {{long}}</p>
+        <p>Accuracy: {{geo.area}} km</p>    
+
+    </div>
+
+    {{>footer}}
+</body>
+
+</html>
