@@ -1,7 +1,9 @@
-const path = require('path')
+const path = require('path') //Path for ez pathing
 const express = require('express')
-const hbs = require('hbs')
+const hbs = require('hbs') //Handlebars
 
+
+// Export
 const geocode = require('./utils/geocode.js')
 const forecast = require('./utils/forecast.js')
 
@@ -22,15 +24,18 @@ hbs.registerPartials(partialsPath)
 // Setup static directory to serve
 app.use(express.static(publicDir))
 
+app.set('trust proxy', true) // Proxy trust
 // Setup static engine and views location
 
 
 app.get('', (req, res) => {
-    const IP = req.ip
+    const IP = req.headers['x-forwarded-for'] || req.socket.remoteAddress
+    const IP2 = req.ip
     res.render('index', {
         title: 'Weather',
         name: 'Yuri Bil',
-        IP: IP
+        IP: IP,
+        IP2: IP2
     })
 })
 
