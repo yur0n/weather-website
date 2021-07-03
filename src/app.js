@@ -32,7 +32,7 @@ app.set('trust proxy', true) // Proxy trust
 
 app.get('/ip', (req, res) => {
     const IP = req.headers['x-forwarded-for'] || req.socket.remoteAddress || req.ip
-    const geo = geoip.lookup('93.77.79.107')
+    const geo = geoip.lookup(IP)
     geocode(geo.city, (error, data) => { 
         if (error) {
             return res.send({ error })
