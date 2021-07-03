@@ -26,9 +26,11 @@ app.use(express.static(publicDir))
 
 
 app.get('', (req, res) => {
+    const IP = req.ip
     res.render('index', {
         title: 'Weather',
-        name: 'Yuri Bil'
+        name: 'Yuri Bil',
+        IP: IP
     })
 })
 
