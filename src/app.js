@@ -57,7 +57,10 @@ app.get('/help', (req, res) => {
 
 app.get('/ip', (req, res) => {
     const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress || req.ip
-    const geo = geoip.lookup(IP)
+    const geo = geoip.lookup(ip)
+    if (!ip){
+        return res.send('ERROR')
+    }
     res.render('ip', {
         title: 'IP',
         name: 'Batya',
@@ -72,7 +75,7 @@ app.get('/ip', (req, res) => {
 
 app.get('/weather', (req, res) => {
     const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress || req.ip
-    const geo = geoip.lookup(IP)
+    const geo = geoip.lookup(ip)
     if (!req.query.address && !geo) {
         return res.send({
             error: 'You must provide an address'
