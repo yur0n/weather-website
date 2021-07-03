@@ -24,7 +24,7 @@ hbs.registerPartials(partialsPath)
 // Setup static directory to serve
 app.use(express.static(publicDir))
 
-app.set('trust proxy', true) // Proxy trust
+app.set('trust proxy', true) // Proxy trust for req.ip
 
 
 // Setup static engine and views location
@@ -56,21 +56,19 @@ app.get('/help', (req, res) => {
 })
 
 app.get('/ip', (req, res) => {
-    const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress || req.ip
-    const geo = geoip.lookup(ip)
-    if (!ip){
-        return res.send('ERROR')
+    var ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress || req.ip
+    if (ip === '::1') {          // So it can work on localhost
+        ip = '93.77.79.107'
     }
-    res.render('ip', {
-        title: 'IP',
-        name: 'Batya',
-        ip,
-        geo,
-        lat: geo.ll[0],
-        long: geo.ll[1],
-
-        
-    })
+        const geo = geoip.lookup(ip)
+        res.render('ip', {
+            title: 'IP',
+            name: 'Batya',
+            ip,
+            geo,
+            lat: geo.ll[0],
+            long: geo.ll[1]
+        })
 })
 
 app.get('/weather', (req, res) => {
@@ -95,7 +93,7 @@ app.get('/weather', (req, res) => {
                 'forecast': forecastData.today,
                 'location': geocodeData.location, //location from geocode
                 'address': req.query.address,
-                'daily': forecastData.tomorrow
+                daily: forecastData.tomorrow
             })
         })
     })
