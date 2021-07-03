@@ -12,17 +12,16 @@
 <body>
     <div class="main-content">
         {{>header}}
-        <p>Place for weather</p>
+        <p id="message-0"></p>
 
         <form>
             <input placeholder="Location">
             <button>Search</button>
         </form>
-
         <p id="message-1"></p>
         <p id="message-2"></p>
         <p id="message-3"></p>
-        <p>{{IP}}</p>
+        <p>{{address}}</p>
     </div>
 
     {{>footer}}
