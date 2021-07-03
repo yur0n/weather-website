@@ -6,7 +6,7 @@ const messageTwo = document.querySelector('#message-2')
 const message3 = document.querySelector('#message-3')
 
 
-fetch('/ip').then((response) => {
+fetch('/weather').then((response) => {
     response.json().then((data = {}) => {
         if (data.error) {
             messageOne.textContent = data.error

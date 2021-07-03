@@ -30,28 +30,28 @@ app.set('trust proxy', true) // Proxy trust
 // Setup static engine and views location
 
 
-app.get('/ip', (req, res) => {
-    const IP = req.headers['x-forwarded-for'] || req.socket.remoteAddress || req.ip
-    const geo = geoip.lookup(IP)
-    geocode(geo.city, (error, data) => { 
-        if (error) {
-            return res.send({ error })
-        }
-        forecast(data.latitude, data.longitude,  (error, Data) => {
-            if (error) {
-                return res.send({
-                    error: error
-            })
-            }
-            res.send({
-                'forecast': Data.today,
-                'location': data.location, //location from geocode
-                'address': geo.city,
-                'daily': Data.tomorrow
-            })
-        })
-    })
-})
+// app.get('/ip', (req, res) => {
+//     const IP = req.headers['x-forwarded-for'] || req.socket.remoteAddress || req.ip
+//     const geo = geoip.lookup(IP)
+//     geocode(geo.city, (error, data) => { 
+//         if (error) {
+//             return res.send({ error })
+//         }
+//         forecast(data.latitude, data.longitude,  (error, Data) => {
+//             if (error) {
+//                 return res.send({
+//                     error: error
+//             })
+//             }
+//             res.send({
+//                 'forecast': Data.today,
+//                 'location': data.location, //location from geocode
+//                 'address': geo.city,
+//                 'daily': Data.tomorrow
+//             })
+//         })
+//     })
+// })
 
 
 
@@ -84,7 +84,7 @@ app.get('/help', (req, res) => {
 app.get('/weather', (req, res) => {
     const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress || req.ip
     const geo = geoip.lookup('93.77.79.107')
-    if (!req.query.address || !geo.city) {
+    if (!req.query.address && !geo) {
         return res.send({
             error: 'You must provide an address'
         })  
