@@ -25,17 +25,17 @@ hbs.registerPartials(partialsPath)
 app.use(express.static(publicDir))
 
 app.set('trust proxy', true) // Proxy trust
+
+
 // Setup static engine and views location
 
 
 app.get('', (req, res) => {
-    const IP = req.headers['x-forwarded-for'] || req.socket.remoteAddress
-    const IP2 = req.ip
+    const IP = req.headers['x-forwarded-for'] || req.socket.remoteAddress || req.ip
     res.render('index', {
         title: 'Weather',
         name: 'Yuri Bil',
-        IP: IP,
-        IP2: IP2
+        IP: IP
     })
 })
 
