@@ -13,7 +13,7 @@ const geocode = (address, callback) => {
                callback(undefined, {
                     latitude: response.body[0].lat,
                     longitude: response.body[0].lon,
-                    location: 'Weather forecast for ' + response.body[0].name
+                    location: response.body[0].name
             })
        }
     })

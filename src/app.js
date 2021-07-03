@@ -1,7 +1,7 @@
 const path = require('path') //Path for ez pathing
 const express = require('express')
 const hbs = require('hbs') //Handlebars
-
+const geoip = require('geoip-lite')
 
 // Export
 const geocode = require('./utils/geocode.js')
@@ -30,38 +30,10 @@ app.set('trust proxy', true) // Proxy trust
 // Setup static engine and views location
 
 
-app.get('', (req, res) => {
+app.get('/ip', (req, res) => {
     const IP = req.headers['x-forwarded-for'] || req.socket.remoteAddress || req.ip
-    res.render('index', {
-        title: 'Weather',
-        name: 'Yuri Bil',
-        IP: IP
-    })
-})
-
-app.get('/about', (req, res) => {
-    res.render('about', {
-        title: 'About Me',
-        name: 'Yuri Bil'
-    })
-})
-
-
-app.get('/help', (req, res) => {
-    res.render('help', {
-        mes: 'You are right here, HELLO!',
-        title: 'Help',
-        name: 'Yuri Bil'
-    })
-})
-
-app.get('/weather', (req, res) => {
-    if (!req.query.address) {
-        return res.send({
-            error: 'You must provide an address'
-        })  
-    }
-    geocode(req.query.address, (error, data) => { 
+    const geo = geoip.lookup('93.77.79.107')
+    geocode(geo.city, (error, data) => { 
         if (error) {
             return res.send({ error })
         }
@@ -74,8 +46,64 @@ app.get('/weather', (req, res) => {
             res.send({
                 'forecast': Data.today,
                 'location': data.location, //location from geocode
-                'address': req.query.address,
+                'address': geo.city,
                 'daily': Data.tomorrow
+            })
+        })
+    })
+})
+
+
+
+
+
+app.get('', (req, res) => {
+    res.render('index', {
+        title: 'Weather',
+        name: 'Batya',
+
+    })
+})
+
+app.get('/about', (req, res) => {
+    res.render('about', {
+        title: 'About Me',
+        name: 'Batya'
+    })
+})
+
+
+app.get('/help', (req, res) => {
+    res.render('help', {
+        mes: 'You are right here, HELLO!',
+        title: 'Help',
+        name: 'Batya'
+    })
+})
+
+app.get('/weather', (req, res) => {
+    const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress || req.ip
+    const geo = geoip.lookup('93.77.79.107')
+    if (!req.query.address || !geo.city) {
+        return res.send({
+            error: 'You must provide an address'
+        })  
+    }
+    geocode(req.query.address || geo.city, (error, geocodeData) => { 
+        if (error) {
+            return res.send({ error })
+        }
+        forecast(geocodeData.latitude, geocodeData.longitude,  (error, forecastData ) => {
+            if (error) {
+                return res.send({
+                    error: error
+            })
+            }
+            res.send({
+                'forecast': forecastData.today,
+                'location': geocodeData.location, //location from geocode
+                'address': req.query.address,
+                'daily': forecastData.tomorrow
             })
         })
     })
@@ -88,9 +116,9 @@ app.get('/weather', (req, res) => {
 
 app.get('/products', (req, res) => {
     if (!req.query.search) {
-       return res.send({
-            error: 'You must provide a search term'
-        })
+       return res.send(
+            'You must provide a search term'
+        )
     }
 
     console.log(req.query.search)
@@ -103,7 +131,7 @@ app.get('/help/*', (req, res) => {
     res.render('404', {
         title: "404",
         mes: 'Help article not found.',
-        name: 'Yuri Bil'
+        name: 'Batya'
     })
 })
 
@@ -113,7 +141,7 @@ app.get('*', (req, res) => {
     res.render('404', {
         title: "404",
         mes: 'Page not found',
-        name: 'Yuri Bil'
+        name: 'Batya'
     })
 })
 
