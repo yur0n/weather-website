@@ -58,16 +58,16 @@ app.get('/help', (req, res) => {
 app.get('/ip', (req, res) => {
     var ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress || req.ip
     if (ip === '::1') {          // So it can work on localhost
-        ip = '93.77.79.107'
+        ip = '93.77.79.107'      // So it can work on localhost
     }
-        const geo = geoip.lookup(ip)
-        res.render('ip', {
-            title: 'IP',
-            name: 'Batya',
-            ip,
-            geo,
-            lat: geo.ll[0],
-            long: geo.ll[1]
+    const geo = geoip.lookup(ip)
+    res.render('ip', {
+        title: 'IP',
+        name: 'Batya',
+        ip,
+        geo,
+        lat: geo.ll[0],
+        long: geo.ll[1]
         })
 })
 
@@ -136,5 +136,5 @@ app.get('*', (req, res) => {
 })
 
 app.listen(port, () => {
-    console.log('Server is up on port' + port)
+    console.log('Server is up on port: ' + port)
 })
