@@ -34,7 +34,7 @@ app.set('trust proxy', true) // Proxy trust for req.ip
 app.get('', (req, res) => {
     res.render('index', {
         title: 'Weather',
-        name: 'Batya',
+        name: 'Me',
 
     })
 })
@@ -42,7 +42,7 @@ app.get('', (req, res) => {
 app.get('/about', (req, res) => {
     res.render('about', {
         title: 'About Me',
-        name: 'Batya'
+        name: 'Me'
     })
 })
 
@@ -51,7 +51,7 @@ app.get('/help', (req, res) => {
     res.render('help', {
         mes: 'You are right here, HELLO!',
         title: 'Help',
-        name: 'Batya'
+        name: 'Me'
     })
 })
 
@@ -63,7 +63,7 @@ app.get('/ip', (req, res) => {
     const geo = geoip.lookup(ip)
     res.render('ip', {
         title: 'IP',
-        name: 'Batya',
+        name: 'Me',
         ip,
         geo,
         lat: geo.ll[0],
@@ -121,7 +121,7 @@ app.get('/help/*', (req, res) => {
     res.render('404', {
         title: "404",
         mes: 'Help article not found.',
-        name: 'Batya'
+        name: 'Me'
     })
 })
 
@@ -131,7 +131,7 @@ app.get('*', (req, res) => {
     res.render('404', {
         title: "404",
         mes: 'Page not found',
-        name: 'Batya'
+        name: 'Me'
     })
 })
 
